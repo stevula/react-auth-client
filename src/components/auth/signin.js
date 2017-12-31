@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { reduxForm } from 'redux-form';
+import { reduxForm, Field } from 'redux-form';
 import PropTypes from 'prop-types';
+import { signinUser } from '../../actions';
 
 class Signin extends Component {
   constructor(props) {
@@ -10,20 +11,33 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, fields: { email, password } } = this.props;
+    const { handleSubmit } = this.props;
 
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
         <fieldset className="form-group">
           <label htmlFor="email">
             Email:
-            <input {...email} id="email" type="text" className="form-control" />
+            <Field
+              id="email"
+              name="email"
+              type="text"
+              className="form-control"
+              component="input"
+            />
           </label>
         </fieldset>
+
         <fieldset className="form-group">
           <label htmlFor="password">
             Password:
-            <input {...password} id="password" type="password" className="form-control" />
+            <Field
+              id="password"
+              name="password"
+              type="password"
+              className="form-control"
+              component="input"
+            />
           </label>
         </fieldset>
         <button action="submit" className="btn btn-primary">Sign in</button>
@@ -31,17 +45,13 @@ class Signin extends Component {
     );
   }
 
-  handleFormSubmit({ email, password }) {
-    console.log(email, password);
+  handleFormSubmit({ email, password }, dispatch) {
+    dispatch(signinUser({ email, password }));
   }
 }
 
 Signin.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  fields: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export default reduxForm({
-  form: 'signin',
-  fields: ['email', 'password'],
-})(Signin);
+export default reduxForm({ form: 'signin' })(Signin);
