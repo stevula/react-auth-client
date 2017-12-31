@@ -51,9 +51,20 @@ class Signin extends Component {
             />
           </label>
         </fieldset>
+        {this.renderAlert()}
         <button action="submit" className="btn btn-primary">Sign in</button>
       </form>
     );
+  }
+
+  renderAlert() {
+    if (this.props.errorMessage) {
+      return (
+        <div className="alert alert-danger">
+          <strong>Oops!</strong>
+        </div>
+      );
+    }
   }
 
   handleFormSubmit({ email, password }, dispatch) {
@@ -62,11 +73,15 @@ class Signin extends Component {
 }
 
 Signin.propTypes = {
+  errorMessage: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   isSignedIn: PropTypes.bool.isRequired,
   // location: PropTypes.object.isRequired,
 };
 
-export default connect(
-  state => ({ isSignedIn: state.isSignedIn }),
-)(reduxForm({ form: 'signin' })(Signin));
+const mapStateToProps = state => ({
+  isSignedIn: state.isSignedIn,
+  errorMessage: state.errorMessage,
+});
+
+export default connect(mapStateToProps)(reduxForm({ form: 'signin' })(Signin));
