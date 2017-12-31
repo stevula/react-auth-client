@@ -24,5 +24,5 @@ export const signinUser = ({ email, password }) => (dispatch) => {
       window.localStorage.setItem('token', response.data.token);
       dispatch(grantAccess());
     })
-    .catch(error => dispatch(handleAuthError(error)));
+    .catch(error => dispatch(handleAuthError(error.message)));
 };

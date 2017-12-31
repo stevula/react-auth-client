@@ -12,6 +12,20 @@ class Signin extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
+  handleFormSubmit({ email, password }, dispatch) {
+    dispatch(signinUser({ email, password }));
+  }
+
+  renderAlert() {
+    if (!this.props.errorMessage) return null;
+
+    return (
+      <div className="alert alert-danger">
+        <strong>Oops! {this.props.errorMessage}</strong>
+      </div>
+    );
+  }
+
   render() {
     const { handleSubmit, isSignedIn } = this.props;
 
@@ -55,20 +69,6 @@ class Signin extends Component {
         <button action="submit" className="btn btn-primary">Sign in</button>
       </form>
     );
-  }
-
-  renderAlert() {
-    if (this.props.errorMessage) {
-      return (
-        <div className="alert alert-danger">
-          <strong>Oops!</strong>
-        </div>
-      );
-    }
-  }
-
-  handleFormSubmit({ email, password }, dispatch) {
-    dispatch(signinUser({ email, password }));
   }
 }
 
