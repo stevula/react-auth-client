@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { signupUser } from '../../actions';
 
 class Signup extends Component {
@@ -65,7 +66,16 @@ class Signup extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, isSignedIn } = this.props;
+
+    if (isSignedIn) {
+      return (
+        <Redirect to={{
+          pathname: '/feature',
+          state: { from: this.props.location },
+        }} />
+      );
+    }
 
     return (
       <form onSubmit={handleSubmit(this.handleFormSubmit)}>
@@ -118,6 +128,9 @@ class Signup extends Component {
 
 Signup.propTypes = {
   errorMessage: PropTypes.string,
+  handleSubmit: PropTypes.func.isRequired,
+  isSignedIn: PropTypes.bool.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 const validate = (values) => {
@@ -130,6 +143,7 @@ const validate = (values) => {
 
 const mapStateToProps = state => ({
   errorMessage: state.errorMessage,
+  isSignedIn: state.isSignedIn,
 });
 
 export default reduxForm({
