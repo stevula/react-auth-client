@@ -27,7 +27,7 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, isSignedIn } = this.props;
+    const { handleSubmit, submitting, isSignedIn } = this.props;
 
     if (isSignedIn) {
       return (
@@ -46,7 +46,8 @@ class Signin extends Component {
             <Field
               id="email"
               name="email"
-              type="text"
+              type="email"
+              required
               className="form-control"
               component="input"
             />
@@ -60,13 +61,20 @@ class Signin extends Component {
               id="password"
               name="password"
               type="password"
+              required
               className="form-control"
               component="input"
             />
           </label>
         </fieldset>
+
         {this.renderAlert()}
-        <button action="submit" className="btn btn-primary">Sign in</button>
+
+        <button
+          type="submit"
+          className="btn btn-primary"
+          disabled={submitting}
+        >Sign in</button>
       </form>
     );
   }
@@ -84,4 +92,6 @@ const mapStateToProps = state => ({
   errorMessage: state.errorMessage,
 });
 
-export default connect(mapStateToProps)(reduxForm({ form: 'signin' })(Signin));
+export default connect(mapStateToProps)(
+  reduxForm({ form: 'signin' })(Signin),
+);
