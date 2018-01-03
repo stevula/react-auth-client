@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class Header extends Component {
   links() {
     if (this.props.isSignedIn) {
-      return [
+      return (
         <li className="nav-item">
           <Link className="nav-link" to="/signout">Sign out</Link>
-        </li>,
-      ];
+        </li>
+      );
     }
 
     return [
@@ -33,6 +34,10 @@ class Header extends Component {
     );
   }
 }
+
+Header.propTypes = {
+  isSignedIn: PropTypes.bool.isRequired,
+};
 
 export default connect(
   state => ({ isSignedIn: state.isSignedIn }),
