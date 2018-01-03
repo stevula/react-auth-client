@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
-import * as actions from '../../actions';
+import PropTypes from 'prop-types';
+import { signupUser } from '../../actions';
 
 class Signup extends Component {
   constructor(props) {
@@ -12,31 +13,8 @@ class Signup extends Component {
     this.renderAlert = this.renderAlert.bind(this);
   }
 
-  handleFormSubmit() {
-    console.log('submit');
-  }
-
-  renderField({ id, input, label, type, meta: { touched, error } }) {
-    return (
-      <fieldset className="form-group">
-        <label htmlFor={id}>
-          {label}:
-          <input {...input} type={type} className="form-control" />
-
-          {this.renderAlert({ touched, error })}
-        </label>
-      </fieldset>
-    );
-  }
-
-  renderAlert({ error, touched }) {
-    if (!touched || !error) return null;
-
-    return (
-      <div className="alert alert-danger">
-        <strong>{error}</strong>
-      </div>
-    );
+  handleFormSubmit({ email, password }, dispatch) {
+    dispatch(signupUser({ email, password }));
   }
 
   isValidEmail(email) {
@@ -50,7 +28,40 @@ class Signup extends Component {
   }
 
   isRequired(val) {
-    return val ? undefined : 'This field is required.';
+    return val ? undefined : 'Field is required.';
+  }
+
+  renderField({ input, type, label, id, meta: { touched, error } }) {
+    return (
+      <fieldset className="form-group">
+        <label htmlFor={id}>
+          {label}:
+          <input {...input} id={id} type={type} className="form-control" />
+
+          {this.renderValidationError({ touched, error })}
+        </label>
+      </fieldset>
+    );
+  }
+
+  renderValidationError({ error, touched }) {
+    if (!touched || !error) return null;
+
+    return (
+      <div className="alert alert-danger">
+        <strong>{error}</strong>
+      </div>
+    );
+  }
+
+  renderAlert() {
+    if (!this.props.errorMessage) return null;
+
+    return (
+      <div className="alert alert-danger">
+        <strong>Oops! {this.props.errorMessage}</strong>
+      </div>
+    );
   }
 
   render() {
@@ -65,6 +76,7 @@ class Signup extends Component {
           className="form-control"
           component={this.renderField}
           validate={[this.isValidEmail, this.isRequired]}
+          type="text"
           required
         />
 
@@ -75,6 +87,7 @@ class Signup extends Component {
           className="form-control"
           component={this.renderField}
           validate={this.isRequired}
+          type="password"
           required
         />
 
@@ -85,8 +98,11 @@ class Signup extends Component {
           className="form-control"
           component={this.renderField}
           validate={this.isRequired}
+          type="password"
           required
         />
+
+        {this.renderAlert()}
 
         <button
           type="submit"
@@ -100,6 +116,10 @@ class Signup extends Component {
   }
 }
 
+Signup.propTypes = {
+  errorMessage: PropTypes.string,
+};
+
 const validate = (values) => {
   const errors = {};
   if (values.password !== values.passwordConfirm) {
@@ -108,7 +128,11 @@ const validate = (values) => {
   return errors;
 };
 
+const mapStateToProps = state => ({
+  errorMessage: state.errorMessage,
+});
+
 export default reduxForm({
   form: 'signup',
   validate,
-})(Signup);
+})(connect(mapStateToProps)(Signup));

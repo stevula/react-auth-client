@@ -74,7 +74,9 @@ class Signin extends Component {
           type="submit"
           className="btn btn-primary"
           disabled={submitting}
-        >Sign in</button>
+        >
+          Sign in
+        </button>
       </form>
     );
   }
@@ -85,6 +87,7 @@ Signin.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   isSignedIn: PropTypes.bool.isRequired,
   // location: PropTypes.object.isRequired,
+  submitting: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -92,6 +95,6 @@ const mapStateToProps = state => ({
   errorMessage: state.errorMessage,
 });
 
-export default connect(mapStateToProps)(
-  reduxForm({ form: 'signin' })(Signin),
-);
+export default reduxForm({
+  form: 'signin',
+})(connect(mapStateToProps)(Signin));
