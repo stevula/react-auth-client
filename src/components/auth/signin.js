@@ -86,7 +86,7 @@ Signin.propTypes = {
   errorMessage: PropTypes.string,
   handleSubmit: PropTypes.func.isRequired,
   isSignedIn: PropTypes.bool.isRequired,
-  // location: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   submitting: PropTypes.bool.isRequired,
 };
 

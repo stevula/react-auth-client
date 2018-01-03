@@ -1,10 +1,10 @@
-import { GRANT_ACCESS, REMOVE_ACCESS } from '../actions';
+import { AUTH_USER, DEAUTH_USER } from '../actions';
 
 const isSignedIn = (state = false, action) => {
   switch (action.type) {
-    case GRANT_ACCESS:
+    case AUTH_USER:
       return true;
-    case REMOVE_ACCESS:
+    case DEAUTH_USER:
       return false;
     default:
       return state;

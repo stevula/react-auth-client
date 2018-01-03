@@ -1,8 +1,10 @@
-import { HANDLE_AUTH_ERROR } from '../actions';
+import { ADD_ERROR, REMOVE_ERROR } from '../actions';
 
 const errorMessage = (state = null, action) => {
   switch (action.type) {
-    case HANDLE_AUTH_ERROR:
+    case ADD_ERROR:
+      return action.error;
+    case REMOVE_ERROR:
       return action.error;
     default:
       return state;

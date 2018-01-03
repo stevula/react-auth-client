@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Header from './header';
+import withAuth from './auth/withAuth';
 import Signin from './auth/signin';
 import Signup from './auth/signup';
 import Signout from './auth/signout';
@@ -11,11 +12,14 @@ export default class App extends Component {
     return (
       <div className="App">
         <Header />
-        <Route exact path="/" render={() => <div>You are Home</div>} />
-        <Route path="/signin" component={Signin} />
-        {<Route path="/signup" component={Signup} />}
-        <Route path="/signout" component={Signout} />
-        <Route path="/feature" component={Feature} />
+        <Switch>
+          <Route exact path="/" render={() => <div>You are Home</div>} />
+          <Route path="/signin" component={Signin} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/signout" component={Signout} />
+          <Route path="/feature" component={withAuth(Feature)} />
+          <Route render={() => <div>Not found</div>} />
+        </Switch>
       </div>
     );
   }
