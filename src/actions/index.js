@@ -38,3 +38,17 @@ export const signoutUser = () => {
   window.localStorage.removeItem('token');
   return { type: DEAUTH_USER };
 };
+
+export const UPDATE_SECRET_MESSAGE = 'UPDATE_SECRET_MESSAGE';
+export const updateSecretMessage = message => ({
+  type: UPDATE_SECRET_MESSAGE,
+  message,
+});
+
+export const fetchSecretMessage = () => (dispatch) => {
+  return axios.get(`${API_ROOT}/restricted`, {
+    headers: { authorization: window.localStorage.getItem('token') },
+  })
+    .then(response => dispatch(updateSecretMessage(response.data.message)))
+    .catch(error => dispatch(addError(error.response.data.message)));
+};

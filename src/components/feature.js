@@ -1,11 +1,29 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { fetchSecretMessage } from '../actions';
 
-export default class Feature extends Component {
+class Feature extends Component {
+  componentWillMount() {
+    this.props.fetchSecretMessage();
+  }
+
   render() {
     return (
       <div>
-        You are at Feature
+        {this.props.secretMessage}
       </div>
     );
   }
 }
+
+Feature.propTypes = {
+  fetchSecretMessage: PropTypes.func.isRequired,
+  secretMessage: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = state => ({
+  secretMessage: state.secretMessage,
+});
+
+export default connect(mapStateToProps, { fetchSecretMessage })(Feature);
